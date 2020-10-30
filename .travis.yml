@@ -1,0 +1,174 @@
+---
+notifications:
+  slack:
+    on_failure: always
+    
+fleet_script_tasks : &fleet_script_tasks
+      script:
+        - python --version
+fleet_install_tasks : &fleet_install_tasks
+      install:
+        - pip install -r requirements.txt
+
+matrix:
+  fast_finish: true
+  include:
+
+    # - name: "Python 3.7 on focal"
+    #   dist: focal 
+    #   language: python # Python 3.6.10 by default
+    #   python: 3.7
+    #   before_install:
+    #     - pip3 install virtualenv
+    #     - virtualenv -p $(which python3) ~venvpy3
+    #     - source ~venvpy3/bin/activate
+    #   <<: *fleet_install_tasks
+    #   <<: *fleet_script_tasks
+    #   after_success:
+    #     - deactivate
+
+    # - name: "Python 3.7 on bionic"
+    #   dist: bionic
+    #   language: python
+    #   python: 3.7
+    #   before_install:
+    #     - pip3 install virtualenv
+    #     - virtualenv -p $(which python3) ~venvpy3
+    #     - source ~venvpy3/bin/activate
+    #   <<: *fleet_install_tasks
+    #   <<: *fleet_script_tasks
+    #   after_success:
+    #     - deactivate
+
+    # - name: "Python 2.7 on xenial"
+    #   dist: xenial
+    #   language: python
+    #   python: 2.7
+    #   before_install:
+    #     - pip install virtualenv
+    #     - virtualenv -p $(which python2) ~venvpy2
+    #     - source ~venvpy2/bin/activate
+    #   <<: *fleet_install_tasks
+    #   <<: *fleet_script_tasks
+    #   after_success:
+    #     - deactivate
+
+    # - name: "Python 3.7.5 on macOS 10.15.5 osx xcode12u"
+    #   os: osx
+    #   osx_image: 
+    #     - xcode12u
+    #   addons:
+    #     homebrew:
+    #       casks:
+    #       - vagrant
+    #       packages:
+    #       - beanstalk
+    #       update: true
+    #   language: shell
+    #   before_install:
+    #     - pip3 install virtualenv
+    #     - virtualenv -p $(which python3) ~venvpy3
+    #     - source ~venvpy3/bin/activate
+    #     - python --version
+    #     - pip install -r requirements.txt
+    #   script:
+    #     - brew list --versions
+    #     - vagrant version    
+    #   after_success:
+    #     # - brew cask uninstall multipass
+    #     - deactivate
+
+    # - name: "Python 2.7.17 on macOS xcode10.2"
+    #   os: osx
+    #   osx_image: xcode10.2
+    #   language: shell
+    #   before_install:
+    #     - pip install virtualenv
+    #     - virtualenv -p $(which python2) ~venvpy2
+    #     - source ~venvpy2/bin/activate
+    #   <<: *fleet_install_tasks
+    #   <<: *fleet_script_tasks
+    #   after_success:
+    #     - deactivate
+
+    # - name: "Python 3.7.5 on macOS xcode10.2"
+    #   os: osx
+    #   osx_image: xcode10.2
+    #   language: shell
+    #   before_install:
+    #     - pip3 install virtualenv
+    #     - virtualenv -p $(which python3) ~venvpy3
+    #     - source ~venvpy3/bin/activate
+    #   <<: *fleet_install_tasks
+    #   <<: *fleet_script_tasks
+    #   after_success:
+    #     - deactivate
+
+    # - name: "Python 3.7.5 on macOS xcode9.4 "
+    #   os: osx
+    #   osx_image: xcode9.4
+    #   language: shell
+    #   before_install:
+    #     - pip3 install virtualenv
+    #     - virtualenv -p $(which python3) ~venvpy3
+    #     - source ~venvpy3/bin/activate
+    #   <<: *fleet_install_tasks
+    #   <<: *fleet_script_tasks
+    #   after_success:
+    #     - deactivate
+
+# https://scoop.sh/
+    - name: "yarn via scoop Python 3.8 on Windows"
+      os: windows
+      language: shell
+      env:
+        - PATH=/c/Python38:/c/Python38/Scripts:$PATH
+      before_install:
+        - choco install python --version 3.8.1
+        - pip install virtualenv
+        - virtualenv $HOME/venv
+        - source $HOME/venv/Scripts/activate
+        - pip install -r requirements.txt
+        - python --version
+      # <<: *fleet_install_tasks
+      # <<: *fleet_script_tasks
+      script:
+      - Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
+      - scoop install yarn
+      - yarn --version
+      after_success:
+        - deactivate             
+
+    - name: "yarn via chocolatey Python 3.8 on Windows"
+      os: windows
+      language: shell
+      env:
+        - PATH=/c/Python38:/c/Python38/Scripts:$PATH
+      before_install:
+        - choco install python --version 3.8.1
+        - pip install virtualenv
+        - virtualenv $HOME/venv
+        - source $HOME/venv/Scripts/activate
+        - pip install -r requirements.txt
+        - python --version
+      # <<: *fleet_install_tasks
+      # <<: *fleet_script_tasks
+      script:
+      - choco install yarn
+      - yarn --version
+      after_success:
+        - deactivate
+
+    # - name: "Python 3.7 on Windows"
+    #   os: windows
+    #   language: shell
+    #   env: PATH=/c/Python37:/c/Python37/Scripts:$PATH
+    #   before_install:
+    #     - choco install python --version 3.7.3
+    #     - python -m pip install virtualenv
+    #     - virtualenv $HOME/venv
+    #     - source $HOME/venv/Scripts/activate
+    #   <<: *fleet_install_tasks
+    #   <<: *fleet_script_tasks
+    #   after_success:
+    #     - deactivate
