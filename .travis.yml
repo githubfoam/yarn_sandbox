@@ -118,26 +118,33 @@ matrix:
     #     - deactivate
 
 # https://scoop.sh/
-    # - name: "yarn via scoop Python 3.8 on Windows"
-    #   os: windows
-    #   language: shell
-    #   env:
-    #     - PATH=/c/Python38:/c/Python38/Scripts:$PATH
-    #   before_install:
-    #     - choco install python --version 3.8.1
-    #     - pip install virtualenv
-    #     - virtualenv $HOME/venv
-    #     - source $HOME/venv/Scripts/activate
-    #     - pip install -r requirements.txt
-    #     - python --version
-    #   # <<: *fleet_install_tasks
-    #   # <<: *fleet_script_tasks
-    #   script:
-    #   - Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
-    #   - scoop install yarn
-    #   - yarn --version
-    #   after_success:
-    #     - deactivate             
+    - name: "yarn via scoop Python 3.8 on Windows"
+      os: windows
+      language: shell
+      env:
+        - PATH=/c/Python38:/c/Python38/Scripts:$PATH
+      before_install:
+        - choco install python --version 3.8.1
+        - pip install virtualenv
+        - virtualenv $HOME/venv
+        - source $HOME/venv/Scripts/activate
+        - pip install -r requirements.txt
+        - python --version
+      # <<: *fleet_install_tasks
+      # <<: *fleet_script_tasks
+      script:
+      - psversiontable.psversion.major # should be >= 5.0
+      - set-executionpolicy remotesigned -scope currentuser
+      # less secure
+      # - set-executionpolicy Unrestricted -scope currentuser
+      - Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
+      # shorter
+      # - iwr -useb get.scoop.sh | iex
+      - scoop install yarn
+      - scoop install nodejs
+      - yarn --version
+      after_success:
+        - deactivate             
 
     - name: "yarn via chocolatey Python 3.8 on Windows"
       os: windows
