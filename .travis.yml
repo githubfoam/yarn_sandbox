@@ -154,6 +154,7 @@ matrix:
       # <<: *fleet_install_tasks
       # <<: *fleet_script_tasks
       script:
+      - choco install nodejs-lts
       - choco install yarn
       - yarn --version
       after_success:
