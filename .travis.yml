@@ -24,6 +24,5 @@ matrix:
       script:
       - choco install nodejs-lts
       - choco install yarn
-      - yarn
       after_success:
         - deactivate
