@@ -53,30 +53,86 @@ matrix:
     #   after_success:
     #     - deactivate
 
-    # - name: "Python 3.7.5 on macOS 10.15.5 osx xcode12u"
-    #   os: osx
-    #   osx_image: 
-    #     - xcode12u
-    #   addons:
-    #     homebrew:
-    #       casks:
-    #       - vagrant
-    #       packages:
-    #       - beanstalk
-    #       update: true
-    #   language: shell
-    #   before_install:
-    #     - pip3 install virtualenv
-    #     - virtualenv -p $(which python3) ~venvpy3
-    #     - source ~venvpy3/bin/activate
-    #     - python --version
-    #     - pip install -r requirements.txt
-    #   script:
-    #     - brew list --versions
-    #     - vagrant version    
-    #   after_success:
-    #     # - brew cask uninstall multipass
-    #     - deactivate
+# https://classic.yarnpkg.com/en/docs/install#mac-stable
+    - name: "yarn w homebrew on macOS 10.15.5 osx xcode12u"
+      os: osx
+      osx_image: 
+        - xcode12u
+      addons:
+        homebrew:
+          packages:
+          - yarn
+          update: true
+      language: shell
+      before_install:
+        - pip3 install virtualenv
+        - virtualenv -p $(which python3) ~venvpy3
+        - source ~venvpy3/bin/activate
+        - python --version
+        - pip install -r requirements.txt
+      script:
+        - yarn --version   
+      after_success:
+        # - brew cask uninstall multipass
+        - deactivate
+
+# https://www.macports.org/index.php
+    - name: "yarn w MacPorts on macOS 10.15.5 osx xcode12u"
+      os: osx
+      osx_image: 
+        - xcode12u
+      language: shell
+      before_install:
+        - pip3 install virtualenv
+        - virtualenv -p $(which python3) ~venvpy3
+        - source ~venvpy3/bin/activate
+        - python --version
+        - pip install -r requirements.txt
+      script:
+        - sudo port install yarn
+        - yarn --version   
+      after_success:
+        # - brew cask uninstall multipass
+        - deactivate
+
+# https://classic.yarnpkg.com/en/docs/install#mac-stable
+    - name: "yarn w Installation Script on macOS 10.15.5 osx xcode12u"
+      os: osx
+      osx_image: 
+        - xcode12u
+      language: shell
+      before_install:
+        - pip3 install virtualenv
+        - virtualenv -p $(which python3) ~venvpy3
+        - source ~venvpy3/bin/activate
+        - python --version
+        - pip install -r requirements.txt
+      script:
+        - curl -o- -L https://yarnpkg.com/install.sh | bash
+        - yarn --version   
+      after_success:
+        # - brew cask uninstall multipass
+        - deactivate
+
+# https://classic.yarnpkg.com/en/docs/install#mac-stable
+# https://github.com/yarnpkg/yarn/releases
+    - name: "yarn specify a version  w Installation Script on macOS 10.15.5 osx xcode12u"
+      os: osx
+      osx_image: 
+        - xcode12u
+      language: shell
+      before_install:
+        - pip3 install virtualenv
+        - virtualenv -p $(which python3) ~venvpy3
+        - source ~venvpy3/bin/activate
+        - python --version
+        - pip install -r requirements.txt
+      script:
+        - curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.22.10
+        - yarn --version   
+      after_success:
+        # - brew cask uninstall multipass
+        - deactivate
 
     # - name: "Python 2.7.17 on macOS xcode10.2"
     #   os: osx
