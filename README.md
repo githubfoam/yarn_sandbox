@@ -1,7 +1,7 @@
 # yarn_sandbox
 yarn build workspaces
 
-[![Build Status](https://travis-ci.com/githubfoam/yarn_sandbox.svg?branch=master)](https://travis-ci.com/githubfoam/yarn_sandbox)  
+[![Build Status](https://travis-ci.com/githubfoam/yarn_sandbox.svg?branch=main)](https://travis-ci.com/githubfoam/yarn_sandbox)  
 
 ~~~~
 
